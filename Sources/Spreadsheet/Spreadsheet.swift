@@ -9,12 +9,14 @@ public class Spreadsheet {
         public var row : Axis
         public var col : Axis
         
-        public mutating func nextRow() {
+        public mutating func nextRow(left:Axis = .minimum) {
             self.row += 1
+            self.col = left
         }
         public mutating func nextCol() {
             self.col += 1
         }
+        
     }
     struct Cell {
         let value:Any?
@@ -106,6 +108,24 @@ public class Spreadsheet {
     
     public func assign(value:Any?, at:Coordinate) {
         self.assign(value: value, atRow: at.row, andColumn: at.col)
+    }
+    
+    public func assign(row values:[Any], at:Coordinate) -> Coordinate {
+        var coord = at
+        for value in values {
+            self.assign(value: value, at: coord)
+            coord.nextCol()
+        }
+        return coord
+    }
+    
+    public func assign(col values:[Any], at:Coordinate) -> Coordinate {
+        var coord = at
+        for value in values {
+            self.assign(value: value, at: coord)
+            coord.nextRow(left: at.col)
+        }
+        return coord
     }
 
     public func assign(value:Any?, atRow row:Axis, andColumn col:Axis) {
