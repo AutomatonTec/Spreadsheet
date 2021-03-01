@@ -9,11 +9,11 @@ public class Spreadsheet {
         public var row : Axis
         public var col : Axis
         
-        mutating func nextRow() {
+        public mutating func nextRow() {
             self.row += 1
         }
-        mutating func nextCol() {
-            self.col += 1 
+        public mutating func nextCol() {
+            self.col += 1
         }
     }
     struct Cell {
