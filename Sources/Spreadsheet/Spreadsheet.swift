@@ -5,7 +5,7 @@ public class Spreadsheet {
     /// 1 ... count
     public typealias Axis = Int
 
-    struct Coordinate {
+    public struct Coordinate {
         let row : Axis
         let col : Axis
     }
@@ -82,6 +82,23 @@ public class Spreadsheet {
                 row.expand(toColCount: c)
             }
         }
+    }
+    
+    public func fetch(_ from:Coordinate) -> Any? {
+        let r = from.row - 1
+        if (0 ..< self.rows.count).contains(r) {
+            let row = self.rows[r]
+            let c = from.col - 1
+            if (0 ..< row.cells.count).contains(c) {
+                let cell = row.cells[c]
+                return cell.value
+            }
+        }
+        return nil
+    }
+    
+    public func assign(value:Any?, at:Coordinate) {
+        self.assign(value: value, atRow: at.row, andColumn: at.col)
     }
 
     public func assign(value:Any?, atRow row:Axis, andColumn col:Axis) {
