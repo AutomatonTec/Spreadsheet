@@ -6,8 +6,15 @@ public class Spreadsheet {
     public typealias Axis = Int
 
     public struct Coordinate {
-        let row : Axis
-        let col : Axis
+        public var row : Axis
+        public var col : Axis
+        
+        mutating func nextRow() {
+            self.row += 1
+        }
+        mutating func nextCol() {
+            self.col += 1 
+        }
     }
     struct Cell {
         let value:Any?
