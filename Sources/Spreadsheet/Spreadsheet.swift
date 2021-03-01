@@ -9,6 +9,16 @@ public class Spreadsheet {
         public var row : Axis
         public var col : Axis
         
+        public init() {
+            self.row = .minimum
+            self.col = .minimum
+        }
+        
+        public init(row:Axis, col:Axis) {
+            self.row = row
+            self.col = col
+        }
+        
         public mutating func nextRow(left:Axis = .minimum) {
             self.row += 1
             self.col = left
