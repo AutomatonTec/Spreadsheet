@@ -1,9 +1,9 @@
 import Foundation
 
 
-class Spreadsheet {
+public class Spreadsheet {
     /// 1 ... count
-    typealias Axis = Int
+    public typealias Axis = Int
 
     struct Coordinate {
         let row : Axis
@@ -63,19 +63,19 @@ class Spreadsheet {
     var rows = [Row]()
     var cols:Int = 0
 
-    convenience init(withRowCount r:Int, andColCount c:Int) {
+    public convenience init(withRowCount r:Int, andColCount c:Int) {
         self.init()
         self.expand(toColCount: c)
         self.expand(toRowCount: r)
     }
 
-    func expand(toRowCount r:Int) {
+    public func expand(toRowCount r:Int) {
         while self.rows.count < r {
             self.rows.append(Row(with: self.cols))
         }
     }
 
-    func expand(toColCount c:Int) {
+    public func expand(toColCount c:Int) {
         if c > self.cols {
             self.cols = c
             self.rows.forEach { (row) in
@@ -84,19 +84,19 @@ class Spreadsheet {
         }
     }
 
-    func assign(value:Any?, atRow row:Axis, andColumn col:Axis) {
+    public func assign(value:Any?, atRow row:Axis, andColumn col:Axis) {
         self.expand(toColCount: col)
         self.expand(toRowCount: row)
         self.rows[row-1].assign(value: value, atColumn: col)
     }
 
-    func assign(header:String, value:Any?, atColumn col:Axis, withRow row:Axis = .minimum) -> Axis {
+    public func assign(header:String, value:Any?, atColumn col:Axis, withRow row:Axis = .minimum) -> Axis {
         self.assign(value: header, atRow: row, andColumn: col)
         self.assign(value: value, atRow: row + 1, andColumn: col)
         return col + 1
     }
 
-    func assign(header:String, values:[Any], atColumn col:Axis, withRow row:Axis = .minimum) -> Axis {
+    public func assign(header:String, values:[Any], atColumn col:Axis, withRow row:Axis = .minimum) -> Axis {
         self.assign(value: header, atRow: row, andColumn: col)
 
         var off = 1
@@ -107,7 +107,7 @@ class Spreadsheet {
         return col + 1
     }
 
-    func assign(headers:[String], atColumn col:Axis) -> Axis {
+    public func assign(headers:[String], atColumn col:Axis) -> Axis {
         var at = col
         headers.forEach { (header) in
             self.assign(value: header, atRow: .minimum, andColumn: at)
@@ -116,13 +116,13 @@ class Spreadsheet {
         return at
     }
 
-    func assign(label:String, value:Any, atRow row:Axis) -> Axis {
+    public func assign(label:String, value:Any, atRow row:Axis) -> Axis {
         self.assign(value: label, atRow: row, andColumn: .minimum)
         self.assign(value: value, atRow: row, andColumn: .minimum + 1)
         return row + 1
     }
 
-    func asCSV() -> String {
+    public func asCSV() -> String {
         let lines = self.rows.map { (row) -> String in
             return row.asCSV()
         }
@@ -132,9 +132,9 @@ class Spreadsheet {
 
 extension Spreadsheet.Axis {
     /// the minimum row or col
-    static let minimum:Spreadsheet.Axis = 1
+    public static let minimum:Spreadsheet.Axis = 1
 
-    static func row(_ r:String) -> Spreadsheet.Axis {
+    public static func row(_ r:String) -> Spreadsheet.Axis {
 
         let floor = Spreadsheet.Axis(Character("A").asciiValue!)
         let base = 26
