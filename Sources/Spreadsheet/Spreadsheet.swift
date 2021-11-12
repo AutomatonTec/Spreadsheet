@@ -72,18 +72,25 @@ public class Spreadsheet {
             self.cells[col-1] = Cell(with: value)
         }
 
-        func asCSV() -> String {
+        func asCSV(_ columnDelimiter:String) -> String {
             let cols = self.cells.map { (cell) -> String in
                 return cell.asCSV()
             }
-            return cols.joined(separator: "\t")
+            return cols.joined(separator: columnDelimiter)
         }
     }
     var rows = [Row]()
     var cols:Int = 0
+    let lineDelimiter:String
+    let columnDelimiter:String
 
-    public convenience init(withRowCount r:Int, andColCount c:Int) {
-        self.init()
+    init(lineDelimiter:String, columnDelimiter:String) {
+        self.lineDelimiter = lineDelimiter
+        self.columnDelimiter = columnDelimiter
+    }
+
+    public convenience init(withRowCount r:Int, andColCount c:Int, lineDelimiter:String = "\n", columnDelimiter:String = "\t" ) {
+        self.init(lineDelimiter: lineDelimiter, columnDelimiter: columnDelimiter)
         self.expand(toColCount: c)
         self.expand(toRowCount: r)
     }
@@ -178,9 +185,9 @@ public class Spreadsheet {
 
     public func asCSV() -> String {
         let lines = self.rows.map { (row) -> String in
-            return row.asCSV()
+            return row.asCSV(columnDelimiter)
         }
-        return lines.joined(separator: "\n")
+        return lines.joined(separator: lineDelimiter)
     }
 }
 
